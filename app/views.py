@@ -8,13 +8,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
+from .models import *
 
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
-
-    html_template = loader.get_template('index.html')
+    records = Reccords.objects.all()
+    context = {'segment': 'index', 'records':records}
+    print(type(records))
+    html_template = loader.get_template('dashboard.html')
     return HttpResponse(html_template.render(context, request))
 
 

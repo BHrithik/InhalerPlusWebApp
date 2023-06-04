@@ -12,25 +12,14 @@
         {% include 'includes/navigation.html' %}
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-            <div class="btn-toolbar dropdown">
-                <button class="btn btn-primary btn-sm mr-2 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-plus mr-2"></span>New Task
+            <div>
+                <button class="btn btn-primary">
+                    <span class="fas fa-plus mr-2"></span>Add Reading manually
                 </button>
-                <div class="dropdown-menu dashboard-dropdown dropdown-menu-left mt-2">
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-tasks"></span>New Task</a>
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-cloud-upload-alt"></span>Upload Files</a>
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-user-shield"></span>Preview Security</a>
-                    <div role="separator" class="dropdown-divider"></div>
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-rocket text-danger"></span>Upgrade to Pro</a>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-primary">Share</button>
-                <button type="button" class="btn btn-sm btn-outline-primary">Export</button>
             </div>
         </div>
         <div class="row justify-content-md-center">
-            <div class="col-12 mb-4">
+            <!-- <div class="col-12 mb-4">
                 <div class="card bg-yellow-alt shadow-sm">
                     <div class="card-header d-flex flex-row align-items-center flex-0">
                         <div class="d-block">
@@ -51,8 +40,8 @@
                         <div class="ct-chart-sales-value ct-double-octave ct-series-g"></div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-4 mb-4">
+            </div> -->
+            <!-- <div class="col-12 col-sm-6 col-xl-4 mb-4">
                 <div class="card border-light shadow-sm">
                     <div class="card-body">
                         <div class="row d-block d-xl-flex align-items-center">
@@ -120,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-12 col-xl-8 mb-4">
@@ -130,7 +119,7 @@
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                    <h2 class="h5">Page visits</h2>
+                                    <h2 class="h5">Recent Recordings</h2>
                                     </div>
                                     <div class="col text-right">
                                         <a href="#" class="btn btn-sm btn-secondary">See all</a>
@@ -141,83 +130,80 @@
                                 <table class="table align-items-center table-flush">
                                     <thead class="thead-light">
                                     <tr>
-                                        <th scope="col">Page name</th>
-                                        <th scope="col">Page Views</th>
-                                        <th scope="col">Page Value</th>
-                                        <th scope="col">Bounce rate</th>
+                                        <th scope="col">Date Time</th>
+                                        <th scope="col">Number of times used in a day</th>
+                                        <th scope="col">Location</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/index.html
-                                        </th>
-                                        <td>
-                                            3,225
-                                        </td>
-                                        <td>
-                                            $20
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-up text-danger mr-3"></span> 42,55%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/forms.html
-                                        </th>
-                                        <td>
-                                            2,987
-                                        </td>
-                                        <td>
-                                            0
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-down text-success mr-3"></span> 43,52%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/util.html
-                                        </th>
-                                        <td>
-                                            2,844
-                                        </td>
-                                        <td>
-                                        294
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-down text-success mr-3"></span> 32,35%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/validation.html
-                                        </th>
-                                        <td>
-                                            2,050
-                                        </td>
-                                        <td>
-                                            $147
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-up text-danger mr-3"></span> 50,87%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/modals.html
-                                        </th>
-                                        <td>
-                                            1,483
-                                        </td>
-                                        <td>
-                                            $19
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-down text-success mr-3"></span> 32,24%
-                                        </td>
-                                    </tr>
+                                        {% for record in records %}
+                                        <tr>
+                                            <th scope="row">
+                                                {{record.time}}
+                                            </th>
+                                            <td>
+                                                {{record.count}}
+                                            </td>
+                                            <td>
+                                                {{record.location}}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        <!-- <tr>
+                                            <th scope="row">
+                                                time
+                                            </th>
+                                            <td class="justify-content-md-center">
+                                                2
+                                            </td>
+                                            <td>
+                                                47.658050 -122.319148
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                time
+                                            </th>
+                                            <td>
+                                                1
+                                            </td>
+                                            <td>
+                                                47.658050 -122.319148
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                time
+                                            </th>
+                                            <td>
+                                                3
+                                            </td>
+                                            <td>
+                                                47.658050 -122.319148
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                time
+                                            </th>
+                                            <td>
+                                                2
+                                            </td>
+                                            <td>
+                                                47.658050 -122.319148
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                time
+                                            </th>
+                                            <td>
+                                                1
+                                            </td>
+                                            <td>
+                                                47.658050 -122.319148
+                                            </td>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
