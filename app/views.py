@@ -13,6 +13,17 @@ import requests
 import pyrebase
 from geopy.geocoders import Nominatim
 import geocoder
+from datetime import datetime
+import json
+
+def getLocation2():
+    send_url = "http://api.ipstack.com/check?access_key=e64f2f88aca1ae8741c8580e431d64c6"
+    geo_req = requests.get(send_url)
+    geo_json = json.loads(geo_req.text)
+    latitude = geo_json['latitude']
+    longitude = geo_json['longitude']
+    city = geo_json['city']
+    return geo_json['zip']+', '+geo_json['city']
 
 
 def getLocation():
@@ -22,7 +33,8 @@ def getLocation():
     location = geolocator.reverse(str(g.latlng[0])+" "+str(g.latlng[1]))
     return location.address
 
-uri = "https://inhalerplus-f6754-default-rtdb.firebaseio.com/findme.json"
+findmeuri = "https://inhalerplus-f6754-default-rtdb.firebaseio.com/findme.json"
+lasturi = "https://inhalerplus-f6754-default-rtdb.firebaseio.com/lastused.json"
 
 def loadData():
     firebaseConfig = {
@@ -37,23 +49,32 @@ def loadData():
     }
     app = pyrebase.initialize_app(firebaseConfig);
     db = app.database()
-    dblist = list(db.child('records').get().val().values())
-    records = Reccords.objects.all()
-    for i in dblist:
-        newrecFlag = True
-        for j in records:
-            if i['time'] == j.time: 
-                newrecFlag = False
-        if newrecFlag:
-            newrec = Reccords(time=i['time'],user=i['user'],location=getLocation(),count = i['count'])
-            newrec.save()
-            records = Reccords.objects.all()
+    dblist = (db.child('lastused').get().val())
+    if dblist == 1:
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        loc = getLocation2()
+        newrec = Reccords(time=dt_string,user="hrk", location=loc[len(loc)-75:], count = 2)
+        newrec.save()
+        response = requests.put(lasturi, data ="0")
+        print(response)
+
 
 @login_required(login_url="/login/")
 def index(request):
     loadData()
     records = Reccords.objects.all()
-    context = {'segment': 'index', 'records':records}
+    totalcount = len(records)
+    monthCount = {
+        "Monday": 0,
+        "Tueday": 0,
+        "Wednesday": 0,
+        "Thursday": 0,
+        "Friday": 0,
+        "Saturday": 0,
+        "Sunday": 0,
+    }
+    context = {'segment': 'index', 'records':records, 'totalCount':totalcount}
     html_template = loader.get_template('dashboard.html')
     return HttpResponse(html_template.render(context, request))
 
@@ -62,7 +83,7 @@ def findme(request):
     loadData()
     records = Reccords.objects.all()
     context = {'segment': 'index', 'records':records}
-    response = requests.put(uri, data ="1")
+    response = requests.put(findmeuri, data ="1")
     print(response)
     html_template = loader.get_template('findMeDashboard.html')
     return HttpResponse(html_template.render(context, request))
