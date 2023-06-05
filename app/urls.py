@@ -10,7 +10,7 @@ urlpatterns = [
 
     # The home page
     path('', views.index, name='home'),
-
+    path('findinhaler/', views.findme, name='findme'),
     # Matches any html file
     re_path(r'^.*\.html', views.pages, name='pages'),
 
